@@ -1,2 +1,2 @@
 # snowy
-A rust binary for managing repo semantic versioning 
+A cli for managing repo semantic versioning 
