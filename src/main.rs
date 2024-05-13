@@ -1,18 +1,28 @@
-use clap::Parser;
-mod file_search;
+use crate::cli::bump;
+use clap::{Command, Parser, Subcommand, ValueEnum};
 
-#[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
-struct Args {
-    #[arg(short, long)]
-    commit: Option<String>,
+mod cli;
+mod parsers;
+
+/// A fictional versioning CLI
+#[derive(Debug, Parser)] // requires `derive` feature
+#[command(name = "snowy")]
+#[command(about = "A fictional versioning CLI", version, long_about = None)]
+struct Cli {
+    #[command(subcommand)]
+    command: Commands,
+}
+
+#[derive(Debug, Subcommand)]
+enum Commands {
+    #[command()]
+    Bump {},
 }
 
 fn main() {
-    let args = Args::parse();
-    if let Some(commit) = args.commit {
-        println!("Using Commit {}", commit)
-    }
+    let args = Cli::parse();
 
-    let _files = file_search::find_local_files();
+    match args.command {
+        Commands::Bump {} => bump::bump(),
+    }
 }
