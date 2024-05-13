@@ -31,9 +31,9 @@ fn find_files_in_vec(root_dir: &str, files_to_match: Vec<&str>) -> io::Result<Ve
 
 pub fn find_local_files() -> io::Result<Vec<PathBuf>> {
     let current_dir = env::current_dir()?;
-    let match_files = ["Cargo.toml"];
+    let match_files = ["Cargo.toml"].to_vec();
 
-    let files = find_files_in_vec(current_dir.to_str().unwrap(), match_files.to_vec());
+    let files = find_files_in_vec(current_dir.to_str().unwrap(), match_files);
 
     return files;
 }
