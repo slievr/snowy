@@ -1,8 +1,8 @@
-use crate::cli::bump;
-use clap::{Command, Parser, Subcommand, ValueEnum};
+use crate::capabilities::bump;
+use clap::{Parser, Subcommand};
 
-mod cli;
-mod parsers;
+mod capabilities;
+mod file;
 
 /// A fictional versioning CLI
 #[derive(Debug, Parser)] // requires `derive` feature
@@ -21,6 +21,10 @@ enum Commands {
 
 fn main() {
     let args = Cli::parse();
+
+    let version = file::write::get_version().unwrap();
+
+    println!("{version}");
 
     match args.command {
         Commands::Bump {} => bump::bump(),

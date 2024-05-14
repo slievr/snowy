@@ -1,14 +1,13 @@
-use crate::parsers::file_search;
+use crate::file;
 use colored::{ColoredString, Colorize};
 use inquire::{InquireError, Select};
 
 pub fn bump() {
-    print!("test");
-    let _files = file_search::find_local_files();
+    let version = file::write::get_version().unwrap();
+    let _files = file::search::find_local_files();
     let options: Vec<ColoredString> = vec!["Major".green(), "Minor".blue(), "Patch".red()];
-
-    let ans: Result<ColoredString, InquireError> =
-        Select::new("Select bump type", options).prompt();
+    let msg = format!("Current version is {version}");
+    let ans: Result<ColoredString, InquireError> = Select::new(&msg, options).prompt();
 
     match ans {
         Ok(choice) => println!("Bumping {choice}!"),
