@@ -15,3 +15,10 @@ pub fn get_version() -> io::Result<String> {
         }
     }
 }
+
+pub fn write_version(version: &str) -> io::Result<()> {
+    let file_path = "VERSION";
+    let mut file = fs::File::create(file_path)?;
+    file.write(version.as_bytes())?;
+    Ok(())
+}
