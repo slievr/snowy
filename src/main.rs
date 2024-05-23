@@ -1,5 +1,6 @@
 use crate::capabilities::release;
 use clap::{Parser, Subcommand};
+use figlet_rs::FIGfont;
 
 mod capabilities;
 mod file;
@@ -21,6 +22,10 @@ enum Commands {
 
 fn main() {
     let args = Cli::parse();
+
+    let standard_font = FIGfont::standard().unwrap();
+    let figure = standard_font.convert("snowy").unwrap();
+    println!("{}", figure);
 
     match args.command {
         Commands::Release {} => release::bump(),
