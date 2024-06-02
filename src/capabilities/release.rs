@@ -1,8 +1,8 @@
-use std::fmt;
+use std::{fmt, io};
 
-use crate::file;
+use crate::{file, ReleaseArgs};
 use colored::{ColoredString, Colorize};
-use inquire::{InquireError, Select};
+use inquire::Select;
 use regex::Regex;
 
 #[derive(Default)]
@@ -56,27 +56,48 @@ impl fmt::Display for SemanticVersion {
     }
 }
 
-pub fn bump() {
+pub fn bump(args: ReleaseArgs) {
     let version = file::write::get_version().unwrap();
-    let _files = file::search::find_local_files();
-
     let sem_version: SemanticVersion = parse_semantic_version(&version).unwrap();
+    let ans = match args {
+        ReleaseArgs {
+            major: true,
+            minor: _,
+            patch: _,
+        } => sem_version.bump_major().to_string(),
+        ReleaseArgs {
+            major: _,
+            minor: true,
+            patch: _,
+        } => sem_version.bump_major().to_string(),
+        ReleaseArgs {
+            major: _,
+            minor: _,
+            patch: true,
+        } => sem_version.bump_major().to_string(),
+        ReleaseArgs {
+            major: _,
+            minor: _,
+            patch: _,
+        } => user_driven_choice(sem_version),
+    };
 
+    let _file_written = file::write::write_version(&ans);
+
+    let _files = file::search::find_local_files();
+}
+
+fn user_driven_choice(version: SemanticVersion) -> String {
     let options: Vec<ColoredString> = vec![
-        sem_version.bump_major().to_string().green(),
-        sem_version.bump_minor().to_string().blue(),
-        sem_version.bump_patch().to_string().red(),
+        version.bump_major().to_string().green(),
+        version.bump_minor().to_string().blue(),
+        version.bump_patch().to_string().red(),
     ];
-    let msg = format!("Current version is {sem_version}");
-    let ans: Result<ColoredString, InquireError> = Select::new(&msg, options).prompt();
-
-    match ans {
-        Ok(choice) => {
-            println!("Bumping {choice}!");
-            let _ = file::write::write_version(&choice);
-        }
-        Err(_) => println!("There was an error, please try again"),
-    }
+    let msg = format!("Current version is {version}");
+    Select::new(&msg, options)
+        .prompt()
+        .unwrap_or(version.to_string().white())
+        .to_string()
 }
 
 fn parse_semantic_version(version_str: &str) -> Option<SemanticVersion> {

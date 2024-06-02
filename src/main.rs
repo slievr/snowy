@@ -1,5 +1,5 @@
 use crate::capabilities::release;
-use clap::{Parser, Subcommand};
+use clap::{Args, Parser, Subcommand};
 use figlet_rs::FIGfont;
 
 mod capabilities;
@@ -14,10 +14,24 @@ struct Cli {
     command: Commands,
 }
 
+#[derive(Debug, Clone, Args)]
+struct ReleaseArgs {
+    /// auto inc major
+    #[arg(long)]
+    major: bool,
+
+    /// auto inc minor
+    #[arg(long)]
+    minor: bool,
+
+    /// auto inc patch
+    #[arg(long)]
+    patch: bool,
+}
+
 #[derive(Debug, Subcommand)]
 enum Commands {
-    #[command()]
-    Release {},
+    Release(ReleaseArgs),
 }
 
 fn main() {
@@ -28,6 +42,6 @@ fn main() {
     println!("{}", figure);
 
     match args.command {
-        Commands::Release {} => release::bump(),
+        Commands::Release(args) => release::bump(args),
     }
 }

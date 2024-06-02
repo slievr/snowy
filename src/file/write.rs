@@ -10,7 +10,7 @@ pub fn get_version() -> io::Result<String> {
         Err(_) => {
             println!("no VERSION file found, creating one with version {version}");
             let mut file = fs::File::create("VERSION").unwrap();
-            file.write(version.as_bytes()).unwrap();
+            file.write_all(version.as_bytes()).unwrap();
             Ok(version.to_string())
         }
     }
@@ -19,6 +19,7 @@ pub fn get_version() -> io::Result<String> {
 pub fn write_version(version: &str) -> io::Result<()> {
     let file_path = "VERSION";
     let mut file = fs::File::create(file_path)?;
-    file.write(version.as_bytes())?;
+    file.write_all(version.as_bytes())?;
+    println!("File: {file_path} updated to version: {version}\n");
     Ok(())
 }
