@@ -1,4 +1,4 @@
-use colored::Colorize;
+use crossterm::style::Stylize;
 use std::env;
 use std::fs;
 use std::io;
@@ -19,6 +19,7 @@ fn find_files_in_vec(root_dir: &str, files_to_match: Vec<&str>) -> io::Result<Ve
                     .any(|f| *f == path.file_name().unwrap())
             {
                 println!("{}", path.display().to_string().blue());
+
                 results.push(path);
             } else if path.is_dir() {
                 dirs_to_visit.push(path);
@@ -33,7 +34,5 @@ pub fn find_local_files() -> io::Result<Vec<PathBuf>> {
     let current_dir = env::current_dir()?;
     let match_files = ["Cargo.toml"].to_vec();
 
-    let files = find_files_in_vec(current_dir.to_str().unwrap(), match_files);
-
-    return files;
+    find_files_in_vec(current_dir.to_str().unwrap(), match_files)
 }

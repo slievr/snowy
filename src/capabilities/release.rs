@@ -1,9 +1,8 @@
-use std::{fmt, io};
-
 use crate::{file, ReleaseArgs};
-use colored::{ColoredString, Colorize};
+use crossterm::style::Stylize;
 use inquire::Select;
 use regex::Regex;
+use std::{collections::HashMap, fmt};
 
 #[derive(Default)]
 struct SemanticVersion {
@@ -69,12 +68,12 @@ pub fn bump(args: ReleaseArgs) {
             major: _,
             minor: true,
             patch: _,
-        } => sem_version.bump_major().to_string(),
+        } => sem_version.bump_minor().to_string(),
         ReleaseArgs {
             major: _,
             minor: _,
             patch: true,
-        } => sem_version.bump_major().to_string(),
+        } => sem_version.bump_patch().to_string(),
         ReleaseArgs {
             major: _,
             minor: _,
@@ -88,16 +87,26 @@ pub fn bump(args: ReleaseArgs) {
 }
 
 fn user_driven_choice(version: SemanticVersion) -> String {
-    let options: Vec<ColoredString> = vec![
-        version.bump_major().to_string().green(),
-        version.bump_minor().to_string().blue(),
-        version.bump_patch().to_string().red(),
-    ];
-    let msg = format!("Current version is {version}");
-    Select::new(&msg, options)
-        .prompt()
-        .unwrap_or(version.to_string().white())
-        .to_string()
+    let options = HashMap::from([
+        (
+            version.bump_major().to_string().green().to_string(),
+            version.bump_major().to_string(),
+        ),
+        (
+            version.bump_minor().to_string().yellow().to_string(),
+            version.bump_minor().to_string(),
+        ),
+        (
+            version.bump_patch().to_string().red().to_string(),
+            version.bump_patch().to_string(),
+        ),
+    ]);
+
+    let render_options = options.clone().into_keys().collect();
+    let msg: String = format!("Current version is {version}");
+    let ans = Select::new(&msg, render_options).prompt().unwrap();
+
+    options.get(&ans).unwrap().to_string()
 }
 
 fn parse_semantic_version(version_str: &str) -> Option<SemanticVersion> {
@@ -117,4 +126,26 @@ fn parse_semantic_version(version_str: &str) -> Option<SemanticVersion> {
             .name("suffix")
             .map_or_else(String::new, |m| m.as_str().to_string()),
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parses_semantic_version() {
+        let result = parse_semantic_version("v1.0.0-test").unwrap();
+        let expected = SemanticVersion {
+            prefix: String::from("v"),
+            major: 1,
+            minor: 0,
+            patch: 0,
+            suffix: String::from("-test"),
+        };
+        assert_eq!(result.prefix, expected.prefix);
+        assert_eq!(result.major, expected.major);
+        assert_eq!(result.minor, expected.minor);
+        assert_eq!(result.patch, expected.patch);
+        assert_eq!(result.suffix, expected.suffix);
+    }
 }

@@ -23,3 +23,6 @@ pub fn write_version(version: &str) -> io::Result<()> {
     println!("File: {file_path} updated to version: {version}\n");
     Ok(())
 }
+
+#[cfg(test)]
+mod test {}
