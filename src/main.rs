@@ -1,5 +1,5 @@
 use clap::{Args, Parser, Subcommand, ValueEnum};
-use figlet_rs::FIGfont;
+use version::parser::get_sem_version;
 mod capabilities;
 mod file;
 mod version;
@@ -47,14 +47,22 @@ enum Commands {
     Release(ReleaseArgs),
 }
 
-fn figure_head() {
-    let standard_font = FIGfont::standard().unwrap();
-    let figure = standard_font.convert("snowy").unwrap();
-    println!("{}", figure);
+fn snowy_logo() {
+    // figure_head();
+    let version = get_sem_version().pretty_string();
+    println!(
+        r#"
+,__, 
+(O,O)  SNOWY
+( _/   {}
+/_"
+"#,
+        version
+    )
 }
 
 fn main() {
-    figure_head();
+    snowy_logo();
 
     let args = Cli::parse();
 

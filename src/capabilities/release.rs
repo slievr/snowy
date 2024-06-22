@@ -2,7 +2,7 @@ use crate::{
     file,
     version::{
         self,
-        parser::{bump_major, bump_minor, bump_patch},
+        parser::{bump_major, bump_minor, bump_patch, get_sem_version},
     },
     ReleaseArgs,
 };
@@ -11,38 +11,36 @@ use inquire::Select;
 use std::collections::HashMap;
 
 pub fn bump(args: ReleaseArgs) {
-    let version = file::write::get_version().unwrap();
-    let sem_version: version::parser::SemanticVersion =
-        version::parser::parse_semantic_version(&version).unwrap();
+    let version = get_sem_version();
     let ans = match args {
         ReleaseArgs {
             major: true,
             minor: _,
             patch: _,
-        } => bump_major(sem_version).to_string(),
+        } => bump_major(version).to_string(),
         ReleaseArgs {
             major: _,
             minor: true,
             patch: _,
-        } => bump_minor(sem_version).to_string(),
+        } => bump_minor(version).to_string(),
         ReleaseArgs {
             major: _,
             minor: _,
             patch: true,
-        } => bump_patch(sem_version).to_string(),
+        } => bump_patch(version).to_string(),
         ReleaseArgs {
             major: _,
             minor: _,
             patch: _,
-        } => user_driven_choice(sem_version),
+        } => user_driven_choice(version),
     };
 
-    let _file_written = file::write::write_version(&ans);
+    let _file_written = file::write::write_version_to_file(&ans);
 
     let _files = file::search::find_local_files();
 }
 
-fn user_driven_choice(version: version::parser::SemanticVersion) -> String {
+fn user_driven_choice(version: version::SemanticVersion) -> String {
     let options: HashMap<String, String> = HashMap::from([
         (
             bump_major(version.clone()).to_string().green().to_string(),

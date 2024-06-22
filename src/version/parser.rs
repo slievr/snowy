@@ -1,56 +1,7 @@
 use regex::Regex;
-use std::fmt;
 
-#[derive(Default, Clone)]
-pub struct SemanticVersion {
-    prefix: String,
-    major: u32,
-    minor: u32,
-    patch: u32,
-    suffix: String,
-}
-
-impl SemanticVersion {
-    fn bump_major(&self) -> SemanticVersion {
-        SemanticVersion {
-            prefix: self.prefix.clone(),
-            major: self.major + 1,
-            minor: self.minor,
-            patch: self.patch,
-            suffix: self.suffix.clone(),
-        }
-    }
-
-    fn bump_minor(&self) -> SemanticVersion {
-        SemanticVersion {
-            prefix: self.prefix.clone(),
-            major: self.major,
-            minor: self.minor + 1,
-            patch: self.patch,
-            suffix: self.suffix.clone(),
-        }
-    }
-
-    fn bump_patch(&self) -> SemanticVersion {
-        SemanticVersion {
-            prefix: self.prefix.clone(),
-            major: self.major,
-            minor: self.minor,
-            patch: self.patch + 1,
-            suffix: self.suffix.clone(),
-        }
-    }
-}
-
-impl fmt::Display for SemanticVersion {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(
-            f,
-            "{0}{1}.{2}.{3}{4}",
-            self.prefix, self.major, self.minor, self.patch, self.suffix
-        )
-    }
-}
+use super::SemanticVersion;
+use crate::file;
 
 pub fn parse_semantic_version(version_str: &str) -> Option<SemanticVersion> {
     let re = Regex::new(
@@ -83,8 +34,12 @@ pub fn bump_major(version: SemanticVersion) -> SemanticVersion {
     version.bump_major()
 }
 
-pub fn display_version(version: SemanticVersion) -> String {
-    version.to_string()
+pub fn get_sem_version() -> SemanticVersion {
+    let version = file::write::get_version_from_file();
+    match parse_semantic_version(&version) {
+        Some(sem_version) => sem_version,
+        _e => SemanticVersion::default(),
+    }
 }
 
 #[cfg(test)]
