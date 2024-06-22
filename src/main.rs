@@ -1,5 +1,5 @@
 use clap::{Args, Parser, Subcommand, ValueEnum};
-use version::parser::get_sem_version;
+use version::{git::is_in_workable_state, parser::get_sem_version};
 mod capabilities;
 mod file;
 mod version;
@@ -62,6 +62,9 @@ fn snowy_logo() {
 }
 
 fn main() {
+    let can_perform_operations = is_in_workable_state().unwrap_or(false);
+    println!("Is workable?: {can_perform_operations}");
+
     snowy_logo();
 
     let args = Cli::parse();

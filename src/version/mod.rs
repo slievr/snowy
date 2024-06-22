@@ -1,5 +1,6 @@
 use std::fmt;
 
+pub mod git;
 pub mod parser;
 use crossterm::style::Stylize;
 
