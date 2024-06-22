@@ -2,6 +2,12 @@
 name = "snowy"
 version = "0.1.0"
 edition = "2021"
+description = "Snowy, is a command line tool to make release managment easy."
+authors = ["slievr"]
+repository = "https://github.com/slievr/snowy"
+readme = "README.md"
+license = "GPL-3.0-or-later"
+exclude = ["*.jpeg", "*.png"]
 
 [dependencies]
 clap = { version = "4.5.4", features = ["derive"] }
