@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use gix::{trace::debug, Repository};
+use gix::Repository;
 
 pub fn is_in_workable_state() -> Result<bool, Box<dyn Error>> {
     if !is_base_branch()? {
@@ -32,7 +32,7 @@ fn is_base_branch() -> Result<bool, Box<dyn Error>> {
 }
 
 fn is_changes_staged() -> Result<bool, Box<dyn Error>> {
-    let repo = get_repo();
+    let _repo = get_repo();
 
     Ok(false)
 }
@@ -48,7 +48,7 @@ fn get_all_refs() {
         if let Some(category) = tag_ref_res.name().category() {
             if category == gix::reference::Category::Tag {
                 let id = tag_ref_res.id();
-                let object = id.object().unwrap();
+                let _object = id.object().unwrap();
             }
         }
     }

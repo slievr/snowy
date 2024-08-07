@@ -30,7 +30,7 @@ struct ReleaseArgs {
 
 #[derive(Debug, Clone, ValueEnum, Default)]
 
-enum BootStrapEnviornment {
+enum BootStrapEnvironment {
     #[default]
     Github,
 }
@@ -38,7 +38,7 @@ enum BootStrapEnviornment {
 #[derive(Debug, Clone, Args)]
 struct BootstrapArgs {
     #[arg(value_enum)]
-    env: BootStrapEnviornment,
+    env: BootStrapEnvironment,
 }
 
 #[derive(Debug, Subcommand)]
