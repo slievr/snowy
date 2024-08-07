@@ -1,3 +1,5 @@
+![tests](https://github.com/github/docs/actions/workflows/test.yml/badge.svg)
+
 # snowy
 <img src="owl.jpeg" width=500px>
 
