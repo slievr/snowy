@@ -14,7 +14,7 @@ A CLI for managing packaging and releasing of a git repo.
 ### deploy:
     - updating a specific tag/commit with a tag (dev/stage/prod) for pickup of a CI Pipeline.
 
-## Running localy
+## Running locally
 
 `cargo run -- release` to run the release command locally.
 
