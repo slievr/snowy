@@ -1,9 +1,9 @@
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use version::{git::is_in_workable_state, parser::get_sem_version};
-mod capabilities;
+mod commands;
 mod file;
 mod version;
-use crate::capabilities::{bootstrap, release};
+use crate::commands::{bootstrap, release};
 
 #[derive(Debug, Parser)]
 #[command(name = "snowy")]
@@ -71,6 +71,6 @@ fn main() {
 
     match args.command {
         Commands::Bootstrap(args) => bootstrap::booststrap(args),
-        Commands::Release(args) => release::bump(args),
+        Commands::Release(args) => release::bump(args).unwrap(),
     }
 }

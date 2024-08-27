@@ -2,6 +2,7 @@ use std::fmt;
 
 pub mod git;
 pub mod parser;
+pub mod toml_edit;
 use crossterm::style::Stylize;
 
 #[derive(Default, Clone)]

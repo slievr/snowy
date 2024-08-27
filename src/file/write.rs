@@ -20,6 +20,6 @@ pub fn write_version_to_file(version: &str) -> io::Result<()> {
     let file_path = "VERSION";
     let mut file = fs::File::create(file_path)?;
     file.write_all(version.as_bytes())?;
-    println!("File: {file_path} updated to version: {version}\n");
+    println!("File: {file_path} updated to version: {version}");
     Ok(())
 }

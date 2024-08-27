@@ -1,6 +1,6 @@
 [package]
 name = "snowy"
-version = "0.1.0"
+version = "0.2.1"
 edition = "2021"
 description = "Snowy, is a command line tool to make release managment easy."
 authors = ["slievr"]
@@ -17,3 +17,4 @@ gix = { version = "0.63.0", features = ["status"] }
 inquire = "0.7.5"
 regex = "1.10.4"
 toml = "0.8.15"
+toml_edit = "0.22.20"

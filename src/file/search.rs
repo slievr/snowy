@@ -18,8 +18,6 @@ fn find_files_in_vec(root_dir: &str, files_to_match: Vec<&str>) -> io::Result<Ve
                     .iter()
                     .any(|f| *f == path.file_name().unwrap())
             {
-                println!("{}", path.display().to_string().blue());
-
                 results.push(path);
             } else if path.is_dir() {
                 dirs_to_visit.push(path);
