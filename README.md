@@ -3,7 +3,7 @@
 ```
 ,__,
 (O,O)  SNOWY
-( _/
+( _/   0.1.0
 /_"
 ```
 
@@ -11,12 +11,4 @@ A CLI for managing packaging and releasing of a git repo.
 
 ## Commands:
 
-### release:
-
-    - bumping the semver
-    - updating nested packages to reflect the new version
-    - commiting repo with git tag as long as git stage is empty.
-
-### deploy:
-
-    - updating a specific tag/commit with a tag (dev/stage/prod) for pickup of a CI Pipeline.
+### release: bump the semver using the version file as a base.

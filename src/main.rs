@@ -49,15 +49,13 @@ enum Commands {
 
 fn snowy_logo() {
     // figure_head();
-    let version = get_sem_version().pretty_string();
     println!(
         r#"
 ,__, 
 (O,O)  SNOWY
-( _/   {}
+( _/   0.2.0
 /_"
-"#,
-        version
+"#
     )
 }
 
