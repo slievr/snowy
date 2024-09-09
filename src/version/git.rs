@@ -9,7 +9,6 @@ pub fn is_in_workable_state() -> Result<bool, Box<dyn Error>> {
     // TODO
     // Check if the current branch is "main" or "master"
     let branch_name = head.name().shorten();
-    println!("{}", branch_name);
     if branch_name != "refs/heads/main" && branch_name != "refs/heads/master" {
         return Ok(false);
     }

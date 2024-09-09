@@ -4,6 +4,7 @@ use super::SemanticVersion;
 use crate::file;
 
 pub fn parse_semantic_version(version_str: &str) -> Option<SemanticVersion> {
+    let version_str = version_str.trim();
     let re = Regex::new(
         r"^(?P<prefix>[a-zA-Z-]*)v?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)(?P<suffix>[-+].*)?$",
     )
@@ -55,6 +56,23 @@ mod tests {
             minor: 0,
             patch: 0,
             suffix: String::from("-test"),
+        };
+        assert_eq!(result.prefix, expected.prefix);
+        assert_eq!(result.major, expected.major);
+        assert_eq!(result.minor, expected.minor);
+        assert_eq!(result.patch, expected.patch);
+        assert_eq!(result.suffix, expected.suffix);
+    }
+
+    #[test]
+    fn parses_simple_semantic_version() {
+        let result = parse_semantic_version("1.1.9").unwrap();
+        let expected = SemanticVersion {
+            prefix: String::from(""),
+            major: 1,
+            minor: 1,
+            patch: 9,
+            suffix: String::from(""),
         };
         assert_eq!(result.prefix, expected.prefix);
         assert_eq!(result.major, expected.major);
