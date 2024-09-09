@@ -80,4 +80,21 @@ mod tests {
         assert_eq!(result.patch, expected.patch);
         assert_eq!(result.suffix, expected.suffix);
     }
+
+    #[test]
+    fn parses_version_with_newline() {
+        let result = parse_semantic_version("1.1.9\n").unwrap();
+        let expected = SemanticVersion {
+            prefix: String::from(""),
+            major: 1,
+            minor: 1,
+            patch: 9,
+            suffix: String::from(""),
+        };
+        assert_eq!(result.prefix, expected.prefix);
+        assert_eq!(result.major, expected.major);
+        assert_eq!(result.minor, expected.minor);
+        assert_eq!(result.patch, expected.patch);
+        assert_eq!(result.suffix, expected.suffix);
+    }
 }
