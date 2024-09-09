@@ -48,7 +48,7 @@ enum Commands {
 }
 
 fn snowy_logo() {
-    // figure_head();
+    let _version = get_sem_version().pretty_string();
     println!(
         r#"
 ,__, 
@@ -60,8 +60,7 @@ fn snowy_logo() {
 }
 
 fn main() {
-    let can_perform_operations = is_in_workable_state().unwrap_or(false);
-    println!("Is workable?: {can_perform_operations}");
+    let _can_perform_operations = is_in_workable_state().unwrap_or(false);
 
     snowy_logo();
 

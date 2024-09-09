@@ -4,7 +4,7 @@ use std::io::Write;
 
 pub fn get_version_from_file() -> String {
     let file_path = "VERSION";
-    let version = "v0.1.0";
+    let version = "0.1.0";
     match fs::metadata(file_path) {
         Ok(_) => fs::read_to_string(file_path).unwrap_or(version.to_string()),
         Err(_) => {
