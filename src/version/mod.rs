@@ -19,8 +19,8 @@ impl SemanticVersion {
         SemanticVersion {
             prefix: self.prefix.clone(),
             major: self.major + 1,
-            minor: self.minor,
-            patch: self.patch,
+            minor: 0,
+            patch: 0,
             suffix: self.suffix.clone(),
         }
     }
@@ -30,7 +30,7 @@ impl SemanticVersion {
             prefix: self.prefix.clone(),
             major: self.major,
             minor: self.minor + 1,
-            patch: self.patch,
+            patch: 0,
             suffix: self.suffix.clone(),
         }
     }
